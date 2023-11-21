@@ -1,12 +1,14 @@
-package ejercicioBiblioteca;
+package ejercicio_biblioteca;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+//import org.sqlite.SQLiteConfig;
 
 import org.sqlite.SQLiteConfig;
 
@@ -26,8 +28,8 @@ public class AccesoBiblioteca {
 			double puntuacion = Teclado.leerReal("�puntuacion�n? ");
 			Class.forName("org.sqlite.JDBC");
 			conexion = DriverManager.getConnection(CONECT);
-			String sentenciaInsertar = "INSERT INTO libro " + "VALUES (" + codigo + ", '" + isbn + "', '"+titulo+"', '"+escritor+"', "+anyo+", "
-					+ puntuacion + ")";
+			String sentenciaInsertar = "INSERT INTO libro " + "VALUES (" + codigo + ", '" + isbn + "', '" + titulo
+					+ "', '" + escritor + "', " + anyo + ", " + puntuacion + ")";
 
 			Statement sentencia = conexion.createStatement();
 			int resultados = sentencia.executeUpdate(sentenciaInsertar);
@@ -51,12 +53,9 @@ public class AccesoBiblioteca {
 			Statement sentencia = conexion.createStatement();
 			ResultSet resultados = sentencia.executeQuery(sentenciaConsultar);
 			while (resultados.next()) {
-				Libro libro = new Libro(resultados.getInt("codigo"),
-						resultados.getString("isbn"),
-						resultados.getString("titulo"),
-						resultados.getString("escritor"),
-						resultados.getInt("anyo_publicacion"),
-						resultados.getDouble("puntuacion"));
+				Libro libro = new Libro(resultados.getInt("codigo"), resultados.getString("isbn"),
+						resultados.getString("titulo"), resultados.getString("escritor"),
+						resultados.getInt("anyo_publicacion"), resultados.getDouble("puntuacion"));
 				listalibros.add(libro);
 			}
 			resultados.close();
@@ -90,11 +89,11 @@ public class AccesoBiblioteca {
 				System.out.println("Se ha actualizado un departamento de la base de datos.");
 			}
 		} finally {
-			
-				if (conexion != null) {
-					conexion.close();
-				}
-			
+
+			if (conexion != null) {
+				conexion.close();
+			}
+
 		}
 	}
 
@@ -108,12 +107,9 @@ public class AccesoBiblioteca {
 			Statement sentencia = conexion.createStatement();
 			ResultSet resultados = sentencia.executeQuery(sentenciaConsultar);
 			while (resultados.next()) {
-				 libro = new Libro(resultados.getInt("codigo"),
-						resultados.getString("isbn"),
-						resultados.getString("titulo"),
-						resultados.getString("escritor"),
-						resultados.getInt("anyo_publicacion"),
-						resultados.getDouble("puntuacion"));
+				libro = new Libro(resultados.getInt("codigo"), resultados.getString("isbn"),
+						resultados.getString("titulo"), resultados.getString("escritor"),
+						resultados.getInt("anyo_publicacion"), resultados.getDouble("puntuacion"));
 
 			}
 			resultados.close();
@@ -125,25 +121,23 @@ public class AccesoBiblioteca {
 		}
 		return libro;
 	}
-	
+
 	public static List<Libro> consultarporescritor(String escritor) throws ClassNotFoundException, SQLException {
 		Connection conexion = null;
 		Libro libro = null;
-		List<Libro> lista= new ArrayList<Libro>();
+		List<Libro> lista = new ArrayList<Libro>();
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conexion = DriverManager.getConnection(CONECT);
-			String sentenciaConsultar = "SELECT * FROM libro " + "WHERE escritor = '" + escritor + "' order by puntuacion desc ";
+			String sentenciaConsultar = "SELECT * FROM libro " + "WHERE escritor = '" + escritor
+					+ "' order by puntuacion desc ";
 			Statement sentencia = conexion.createStatement();
 			ResultSet resultados = sentencia.executeQuery(sentenciaConsultar);
 			while (resultados.next()) {
-				 libro = new Libro(resultados.getInt("codigo"),
-						resultados.getString("isbn"),
-						resultados.getString("titulo"),
-						resultados.getString("escritor"),
-						resultados.getInt("anyo_publicacion"),
-						resultados.getDouble("puntuacion"));
-				 lista.add(libro);
+				libro = new Libro(resultados.getInt("codigo"), resultados.getString("isbn"),
+						resultados.getString("titulo"), resultados.getString("escritor"),
+						resultados.getInt("anyo_publicacion"), resultados.getDouble("puntuacion"));
+				lista.add(libro);
 			}
 			resultados.close();
 			sentencia.close();
@@ -154,12 +148,11 @@ public class AccesoBiblioteca {
 		}
 		return lista;
 	}
-	
-	
+
 	public static List<Libro> consultarnoprestados() throws ClassNotFoundException, SQLException {
 		Connection conexion = null;
 		Libro libro = null;
-		List<Libro> lista= new ArrayList<Libro>();
+		List<Libro> lista = new ArrayList<Libro>();
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conexion = DriverManager.getConnection(CONECT);
@@ -167,13 +160,10 @@ public class AccesoBiblioteca {
 			Statement sentencia = conexion.createStatement();
 			ResultSet resultados = sentencia.executeQuery(sentenciaConsultar);
 			while (resultados.next()) {
-				 libro = new Libro(resultados.getInt("codigo"),
-						resultados.getString("isbn"),
-						resultados.getString("titulo"),
-						resultados.getString("escritor"),
-						resultados.getInt("anyo_publicacion"),
-						resultados.getDouble("puntuacion"));
-				 lista.add(libro);
+				libro = new Libro(resultados.getInt("codigo"), resultados.getString("isbn"),
+						resultados.getString("titulo"), resultados.getString("escritor"),
+						resultados.getInt("anyo_publicacion"), resultados.getDouble("puntuacion"));
+				lista.add(libro);
 			}
 			resultados.close();
 			sentencia.close();
@@ -184,6 +174,7 @@ public class AccesoBiblioteca {
 		}
 		return lista;
 	}
+
 //select * from libro where codigo not in (select codigo_libro from prestamo GROUP by codigo_libro) ;
 	public static void eliminar(int codigo) throws ClassNotFoundException, SQLException {
 		Connection conexion = null;
@@ -201,7 +192,7 @@ public class AccesoBiblioteca {
 			} else {
 				System.out.println("Se ha eliminado un departamento de la base de datos.");
 			}
-		}  finally {
+		} finally {
 			try {
 				if (conexion != null) {
 					conexion.close();
@@ -211,6 +202,43 @@ public class AccesoBiblioteca {
 				sqle.printStackTrace();
 			}
 		}
+	}
+
+	public static int actualizarvarios(List<Libro> lista) throws ClassNotFoundException, SQLException {
+		Connection conexion = null;
+		int librosactualizados = 0;
+		try {
+			
+			Class.forName("org.sqlite.JDBC");
+			SQLiteConfig config = new SQLiteConfig();
+			config.enforceForeignKeys(true);
+			conexion = DriverManager.getConnection(CONECT);
+			conexion.setAutoCommit(false);
+			String sentenciaactualizar = "update libro set puntuacion = puntuacion * ? where codigo = ?";
+			
+			for (Libro libro : lista) {
+				PreparedStatement sentencia = conexion.prepareStatement(sentenciaactualizar);
+				sentencia.setDouble(1, 3);
+				sentencia.setDouble(2, libro.codigo);
+				librosactualizados = librosactualizados + sentencia.executeUpdate();
+			}
+			conexion.commit();
+		
+		}catch(SQLException sqle) {
+			if (conexion != null) {
+				conexion.rollback();
+				librosactualizados = 0;
+			}
+			throw sqle;
+		}
+		finally {
+			
+				if (conexion != null) {
+					conexion.close();
+				}
+			
+		}
+		return librosactualizados;
 	}
 
 }
