@@ -1,0 +1,82 @@
+public class AccesoSocios {
+
+	final static String CONECT = "jdbc:sqlite:db\\biblioteca.db";
+
+	public static int insertar(Socio socio) throws ClassNotFoundException, SQLException {
+		Connection conexion = null;
+		int resultados = 0;
+		try {
+
+			Class.forName("org.sqlite.JDBC");
+			conexion = DriverManager.getConnection(CONECT);
+			String sentenciaInsertar = "INSERT INTO socio " + "VALUES (" + socio.codigo + ", '" + socio.dni + "','"+socio.nombre+"', '"
+					+ socio.domicilio + "', " + socio.telefono + ", '" + socio.correo + "')";
+
+			Statement sentencia = conexion.createStatement();
+			resultados = sentencia.executeUpdate(sentenciaInsertar);
+			System.out.println(resultados);
+			sentencia.close();
+		} finally {
+			if (conexion != null) {
+				conexion.close();
+			}
+		}
+		return resultados;
+
+	}
+	
+	public static Socio consultar(int codigo) throws ClassNotFoundException, SQLException {
+		Connection conexion = null;
+		Socio socio = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			conexion = DriverManager.getConnection(CONECT);
+			String sentenciaConsultar = "SELECT * FROM socio " + "WHERE codigo = '" + codigo + "' ";
+			Statement sentencia = conexion.createStatement();
+			ResultSet resultados = sentencia.executeQuery(sentenciaConsultar);
+			while (resultados.next()) {
+				socio = new Socio(resultados.getInt("codigo"), resultados.getString("dni"),
+						resultados.getString("nombre"), resultados.getString("domicilio"),
+						resultados.getInt("telefono"), resultados.getString("correo"));
+
+			}
+			resultados.close();
+			sentencia.close();
+		} finally {
+			if (conexion != null) {
+				conexion.close();
+			}
+		}
+		return socio;
+	}
+	
+	
+	public static void eliminar(int codigo) throws ClassNotFoundException, SQLException {
+		Connection conexion = null;
+		try {
+
+			Class.forName("org.sqlite.JDBC");
+			SQLiteConfig config = new SQLiteConfig();
+			config.enforceForeignKeys(true);
+			conexion = DriverManager.getConnection(CONECT, config.toProperties());
+			String sentenciaEliminar = "DELETE FROM socio " + "WHERE codigo = " + codigo;
+			Statement sentencia = conexion.createStatement();
+			int filasEliminadas = sentencia.executeUpdate(sentenciaEliminar);
+			if (filasEliminadas == 0) {
+				System.out.println("No se ha encontrado ning�n departamento con ese c�digo.");
+			} else {
+				System.out.println("Se ha eliminado un departamento de la base de datos.");
+			}
+		} finally {
+			try {
+				if (conexion != null) {
+					conexion.close();
+				}
+			} catch (SQLException sqle) {
+				
+				System.out.println("Error al cerrar la base de datos: " + sqle.getMessage());
+				sqle.printStackTrace();
+			}
+		}
+	}
+}
