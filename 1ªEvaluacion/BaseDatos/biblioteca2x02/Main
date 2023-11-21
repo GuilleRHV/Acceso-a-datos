@@ -1,0 +1,66 @@
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try {
+			int opcion = 0;
+			int codigo, telefono;
+			String dni, nombre, domicilio, correo;
+			AccesoSocios as = new AccesoSocios();
+			Socio socio;
+			do {
+				System.out.println(menu());
+				opcion = Teclado.leerEntero("Introduce opcion");
+				switch (opcion) {
+				case 0:
+					System.out.println("Fin del programa");
+					break;
+				case 1:
+					codigo = Teclado.leerEntero("Introduce codigo");
+					dni = Teclado.leerCadena("Introduce dni");
+					nombre = Teclado.leerCadena("Introduce nombre");
+					domicilio = Teclado.leerCadena("Introduce domicilio");
+					telefono = Teclado.leerEntero("Introduce telefono");
+					correo = Teclado.leerCadena("INtroduce correo");
+					socio = new Socio(codigo, dni, nombre, domicilio, telefono, correo);
+					
+					int soc = as.insertar(socio);
+					if (soc>0) {
+						System.out.println("Se ha inserado un socio");
+					}else {
+						System.out.println("No se ha inserado ningun socio");
+					}
+					break;
+				case 2:
+					codigo = Teclado.leerEntero("Introduce codigo del socio que quieres eliminar");
+					socio = as.consultar(codigo);
+					if (socio != null) {
+						as.eliminar(codigo);
+					} else {
+						System.out.println("No existe ningun libro con este codigo");
+					}
+					break;
+				
+				default:
+					System.out.println("Opcion invalida");
+					break;
+				}
+			} while (opcion != 0);
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println("Error al cargar el conector de SQLite: " + cnfe.getMessage());
+			cnfe.printStackTrace();
+		} catch (SQLException sqle) {
+			System.out.println("Error de SQL: " + sqle.getMessage());
+			sqle.printStackTrace();
+		}
+	}
+
+	public static String menu() {
+		String cadena = "0) Salir del programa.\n1) Insertar un socio en la base de datos.\r\n"
+				+ "2) Eliminar un socio, por código, de la base de datos..\n3)Consultar todos los libros de la base de datos.\n4) Consultar varios libros, por escritor, de la base de datos, ordenados por puntuación\r\n"
+				+ "decendente.\n5) Consultar los libros no prestados de la base de datos.\n6) Consultar los libros devueltos, en una fecha, de la base de datos.";
+		return cadena;
+	}
+
+}
