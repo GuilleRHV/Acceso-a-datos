@@ -1,4 +1,4 @@
-package ejercicioBiblioteca;
+package ejercicio_biblioteca;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,9 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sqlite.SQLiteConfig;
-
-import ejercicio.AccesoDepartamento;
 import entrada.Teclado;
 
 public class Main {
@@ -52,24 +49,33 @@ public class Main {
 				case 4:
 					String nombreescritor = Teclado.leerCadena("Introduce nombre del escritor que quieres buscar");
 					List<Libro> lista = ab.consultarporescritor(nombreescritor);
-					if(lista.size()>0) {
+					if (lista.size() > 0) {
 						for (Libro libro : lista) {
 							System.out.println(libro.toString());
 						}
-					}else {
-						System.out.println("No hay libro escritos por "+nombreescritor);
+					} else {
+						System.out.println("No hay libro escritos por " + nombreescritor);
 					}
 					break;
 				case 5:
 					List<Libro> list = ab.consultarnoprestados();
-					if(list.size()>0) {
+					if (list.size() > 0) {
 						for (Libro libro : list) {
 							System.out.println(libro.toString());
 						}
-					}else {
+					} else {
 						System.out.println("No hay libros no prestados");
 					}
 
+					break;
+				case 6:
+
+					int actualizados = ab.actualizarvarios(ab.consultarTodos());
+					if (actualizados > 0) {
+						System.out.println("Se han actualizado " + actualizados + " libros");
+					} else {
+						System.out.println("No se ha actualizado ningun libro");
+					}
 					break;
 				default:
 					System.out.println("Opcion invalida");
@@ -88,8 +94,7 @@ public class Main {
 	public static String menu() {
 		String cadena = "0) Salir del programa.\n1) Insertar un libro en la base de datos.\r\n"
 				+ "2) Eliminar un libro, por código, de la base de datos..\n3)Consultar todos los libros de la base de datos.\n4) Consultar varios libros, por escritor, de la base de datos, ordenados por puntuación\r\n"
-				+ "decendente.\n5) Consultar los libros no prestados de la base de datos.\n6) Consultar los libros devueltos, en una fecha, de la base de datos."
-				;
+				+ "decendente.\n5) Consultar los libros no prestados de la base de datos.\n6) Consultar los libros devueltos, en una fecha, de la base de datos.";
 		return cadena;
 	}
 
