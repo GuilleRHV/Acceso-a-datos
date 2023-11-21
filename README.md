@@ -17,3 +17,4 @@ for (int i=0;i<numDepart.lenght(),i++){
    sentencia.setDouble(1,aumento[i]);
    empleados = empleados + sentencia.executeUpdate();
 }
+bbdd envevida(se almacena en un fichero, como SQLite) y una en cliente-servidor
