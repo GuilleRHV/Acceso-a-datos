@@ -1,0 +1,25 @@
+public class Socio {
+	public int codigo;
+	public String dni;
+	public String nombre;
+	public String domicilio;
+	public int telefono;
+	public String correo;
+
+	public Socio(int codigo, String dni, String nombre, String domicilio, int telefono, String correo) {
+		super();
+		this.codigo = codigo;
+		this.dni = dni;
+		this.nombre = nombre;
+		this.domicilio = domicilio;
+		this.telefono = telefono;
+		this.correo = correo;
+	}
+
+	@Override
+	public String toString() {
+		return "Socio [codigo=" + codigo + ", dni=" + dni + ", nombre=" + nombre + ", domicilio=" + domicilio
+				+ ", telefono=" + telefono + ", correo=" + correo + "]";
+	}
+
+}
