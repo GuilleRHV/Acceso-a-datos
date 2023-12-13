@@ -1,0 +1,35 @@
+Para implementar internacionalización en Android Studio, sigue estos pasos:
+
+1. **Crea directorios de recursos para cada idioma:**
+   - En el directorio `res`, crea carpetas con el formato `values-xx`, donde `xx` representa el código del idioma (por ejemplo, `values-es` para español).
+   - Dentro de cada carpeta, crea un archivo `strings.xml` para almacenar las cadenas específicas del idioma.
+
+2. **Define cadenas en archivos de recursos:**
+   - En el archivo `strings.xml` de cada carpeta de idioma, define las cadenas correspondientes a ese idioma utilizando el mismo nombre de clave en todos los archivos.
+
+    ```xml
+    <!-- En values/strings.xml -->
+    <string name="welcome_message">Hello, welcome!</string>
+
+    <!-- En values-es/strings.xml -->
+    <string name="welcome_message">Hola, bienvenido/a!</string>
+    ```
+
+3. **Usa las cadenas en tu código:**
+   - En tu código Java/Kotlin, utiliza las cadenas mediante su identificador.
+
+    ```java
+    String welcomeMessage = getString(R.string.welcome_message);
+    ```
+
+4. **Configura el idioma de la aplicación:**
+   - Puedes cambiar el idioma de la aplicación en tiempo de ejecución o configurarlo en el archivo `AndroidManifest.xml`. Para cambiarlo en tiempo de ejecución:
+
+    ```java
+    Resources resources = getResources();
+    Configuration configuration = resources.getConfiguration();
+    configuration.setLocale(new Locale("es")); // Cambia "es" al código de idioma deseado
+    resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+    ```
+
+Estos pasos te permitirán internacionalizar tu aplicación en Android Studio. Asegúrate de proporcionar traducciones para todas las cadenas utilizadas en tu aplicación.
